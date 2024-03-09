@@ -73,7 +73,7 @@
             @onCancel="onCancelDrawingCanvas"/>
       </div>
     </div>
-    <div v-if="!loading">
+    <div v-if="!loading" class="w-full">
       <div v-if="pages.length" class="w-full">
       <div class="flex justify-center px-5 w-full md:hidden">
         <img src="/edit.svg" class="mr-2" alt="a pen, edit pdf name"/>
