@@ -238,6 +238,7 @@ export default {
     async init() {
   if (this.$route.hash) {
     this.DEBUG_LINK = this.$route.hash.replace('#', '');
+    console.log(this.DEBUG_LINK);
     this.loading = true;
     try {
       const res = await fetch(this.DEBUG_LINK, { mode: 'no-cors' });
@@ -343,8 +344,6 @@ export default {
         console.log("Failed to add pdf.");
         throw e;
       }
-
-      this.loading = true;
     },
     async onUploadImage(e) {
       const file = e.target.files[0];
