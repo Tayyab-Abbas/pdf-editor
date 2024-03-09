@@ -86,7 +86,7 @@
       <div class="w-full">
         <div v-for="(page,pIndex) in pages" :key="pIndex">
           <div
-              class="p-5 w-full flex flex-col items-center overflow-hidden"
+              class="p-5 w-full flex flex-col overflow-scroll"
               @mousedown="selectPage(pIndex)"
               @touchstart="selectPage(pIndex)">
             <div
