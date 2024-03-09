@@ -240,7 +240,7 @@ export default {
     this.DEBUG_LINK = this.$route.hash.replace('#', '');
     this.loading = true;
     try {
-      const res = await fetch(this.DEBUG_LINK);
+      const res = await fetch(this.DEBUG_LINK, { mode: 'no-cors' });
       const pdfBlob = await res.blob();
       await this.addPDF(pdfBlob);
       this.selectedPageIndex = 0;
