@@ -57,7 +57,7 @@
       </div>
       <button
           @click="savePDF"
-          class="w-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3
+          class="w-30 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3
       md:px-4 mr-3 md:mr-4 rounded"
           :class="[(pages.length === 0 || saving || !pdfFile) ?'cursor-not-allowed bg-blue-700':'']">
         {{ saving ? 'Downloading' : 'Download' }}
