@@ -23,12 +23,13 @@
           name="image"
           class="hidden"
           @change="onUploadImage"/>
-      <label
+          <!-- Todo: choose pdf button is disabled -->
+      <!-- <label
           class="whitespace-no-wrap bg-blue-500 hover:bg-blue-700 text-white
       font-bold py-1 px-3 md:px-4 rounded mr-3 cursor-pointer md:mr-4"
           for="pdf">
         Choose PDF
-      </label>
+      </label> -->
       <div
           class="relative mr-3 flex h-8 bg-gray-400 rounded-sm overflow-hidden
       md:mr-4">
@@ -77,13 +78,14 @@
             class="flex-grow bg-transparent"
             :value="pdfName"/>
       </div>
-      <button
+      <!-- Todo: Download button is disabled -->
+      <!-- <button
           @click="savePDF"
           class="w-30 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3
       md:px-4 mr-3 md:mr-4 rounded"
           :class="[(pages.length === 0 || saving || !pdfFile) ?'cursor-not-allowed bg-blue-700':'']">
         {{ saving ? 'Downloading' : 'Download' }}
-      </button>
+      </button> -->
     </div>
     <div v-if="addingDrawing">
       <div
@@ -175,7 +177,8 @@
     </div>
     <div v-else>
       <div class="w-full flex-grow flex justify-center items-center">
-        <span class=" font-bold text-3xl text-gray-500">Drag something here</span>
+        <!-- Todo: Drag something is disabled -->
+        <!-- <span class=" font-bold text-3xl text-gray-500">Drag something here</span> -->
       </div>
     </div>
     </div>
