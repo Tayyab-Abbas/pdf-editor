@@ -5,18 +5,22 @@
 <script>
 export default {
   name: "PDFPage",
-  props: ["page"],
+  props: ["page", "scale"],
   data() {
     return {
-      // canvas:null,
-      // width:null,
-      // height:null,
       clientWidth: null,
-      scale: 1,
+      currentPage: null,
     };
   },
   mounted() {
     this.render();
+  },
+  watch: {
+    scale: function(newScale, oldScale) {
+      if (newScale !== oldScale) {
+        this.render();
+      }
+    },
   },
   methods: {
     getCanvasMeasurement() {
@@ -31,6 +35,7 @@ export default {
       });
     },
     async render() {
+      if (!this.page) return;
       const _page = await this.page;
       let canvas = this.$refs.canvas;
       const context = canvas.getContext("2d");

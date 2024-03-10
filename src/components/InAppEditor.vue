@@ -9,6 +9,14 @@
           id="pdf"
           @change="onUploadPDF"
           class="hidden"/>
+          <input
+          class="pdf-page-controller"
+          :class="[selectedPageIndex < 0 || zoomDisabled ?'cursor-not-allowed bg-gray-500':'']"
+          v-model.trim.lazy="currentPageInput"
+          @change="changePdfActivePage"
+          type="text"
+          />
+          out of {{ pages.length }}
       <input
           type="file"
           id="image"
@@ -28,14 +36,14 @@
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             for="image"
-            :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
+            :class="[selectedPageIndex < 0 || zoomDisabled ?'cursor-not-allowed bg-gray-500':'']">
           <img src="/image.svg" alt="An icon for adding images"/>
         </label>
         <label
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             for="text"
-            :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']"
+            :class="[selectedPageIndex < 0 || zoomDisabled ?'cursor-not-allowed bg-gray-500':'']"
             @click="onAddTextField">
           <img src="/notes.svg" alt="An icon for adding text"/>
         </label>
@@ -43,8 +51,22 @@
             class="flex items-center justify-center h-full w-8 hover:bg-gray-500
         cursor-pointer"
             @click="onAddDrawing"
-            :class="[selectedPageIndex < 0 ?'cursor-not-allowed bg-gray-500':'']">
+            :class="[selectedPageIndex < 0 || zoomDisabled ?'cursor-not-allowed bg-gray-500':'']">
           <img src="/gesture.svg" alt="An icon for adding drawing"/>
+        </label>
+        <label
+            class="flex items-center justify-center h-full w-8 hover:bg-gray-500
+        cursor-pointer"
+            @click="zoomIn"
+            :class="[selectedPageIndex < 0 || zoomDisabled ?'cursor-not-allowed bg-gray-500':'']">
+          <img src="/plus.svg" alt="An icon for adding drawing"/>
+        </label>
+        <label
+            class="flex items-center justify-center h-full w-8 hover:bg-gray-500
+        cursor-pointer"
+            @click="zoomOut"
+            :class="[selectedPageIndex < 0 || zoomDisabled ?'cursor-not-allowed bg-gray-500':'']">
+          <img src="/minus.svg" alt="An icon for adding drawing"/>
         </label>
       </div>
       <div class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
@@ -86,7 +108,7 @@
       <div class="w-full">
         <div v-for="(page,pIndex) in pages" :key="pIndex">
           <div
-              class="p-5 w-full flex flex-col overflow-scroll"
+              class="p-5 w-full flex flex-col items-center overflow-scroll"
               @mousedown="selectPage(pIndex)"
               @touchstart="selectPage(pIndex)">
             <div
@@ -95,6 +117,7 @@
               <PDFPage
                   :ref="`page${pIndex}`"
                   :data-key="pIndex"
+                  :scale="pdfscale"
                   @onMeasure="onMeasure($event, pIndex)"
                   :page="page"/>
               <div
@@ -229,6 +252,9 @@ export default {
       addingDrawing: false,
       DEBUG_LINK: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
       loading: false,
+      pdfscale: 1,
+      currentPageInput: null,
+      zoomDisabled: false,
     }
   },
   async mounted() {
@@ -443,6 +469,7 @@ export default {
 
     selectPage(index) {
       this.selectedPageIndex = index;
+      this.currentPageInput = index + 1;
     },
 
     updateObject(objectId, payload) {
@@ -467,6 +494,45 @@ export default {
     onMeasure(e, i) {
       this.pagesScale[i] = e.scale;
     },
+    zoomIn() {
+      if (!this.zoomDisabled) {
+        this.pdfscale = this.pdfscale + 0.2;
+        this.zoomDisabled = true;
+        setTimeout(() => {
+          this.zoomDisabled = false;
+        }, 3000); // Disable for 5 seconds
+      }
+    },
+    zoomOut() {
+      if (!this.zoomDisabled) {
+        this.pdfscale = this.pdfscale - 0.2;
+        this.zoomDisabled = true;
+        setTimeout(() => {
+          this.zoomDisabled = false;
+        }, 3000); // Disable for 5 seconds
+      }
+    },
+
+    changePdfActivePage(event) {
+      if (!isNaN(event.target.value)) {
+        this.selectedPageIndex = parseInt(event.target.value - 1);
+        this.scrollToPageWithOutline();
+      }
+    },
+    scrollToPageWithOutline() {
+  // Find all elements with classes 'relative' and 'shadow-lg'
+  const elements = document.querySelectorAll('.relative.shadow-lg');
+  // Loop through each element to check if it has the 'shadowOutline' class
+  elements.forEach(element => {
+    
+      // Add a small delay before scrolling to the element
+      setTimeout(() => {
+        if (element.classList.contains('shadowOutline')) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 1);
+  });
+},
 
 // FIXME: Should wait all objects finish their async work
     async savePDF() {
@@ -510,5 +576,24 @@ li {
 
 a {
   color: #42b983;
+}
+.cursor-not-allowed {
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
+.pdf-page-controller {
+  padding: 4px 6px;
+  border: none;
+  border-radius: 8px;
+  display: inline-block;
+  min-width: 2ch;
+  width: 10%;
+  max-width: 6ch;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  color: black;
+}
+.pdf-page-controller:focus {
+  outline: none;
 }
 </style>
