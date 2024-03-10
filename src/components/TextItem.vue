@@ -94,7 +94,7 @@
       </tapout-component>
     </toolbar-component>
     <tapout-component
-        class="absolute left-0 top-0 select-none"
+        class="absolute left-17rem top-6 select-none"
         :style="{ transform: `translate(${x + dx}px, ${y + dy}px)` }"
         @tapout="onBlur"
     >
@@ -308,6 +308,7 @@ export default {
       this.operation = "tool";
     },
     async onBlurTool() {
+      console.log("this.operation", this.operation);
       if (this.operation !== "tool" || this.operation === "edit") return;
       this.$emit("onUpdate", {
         lines: this.extractLines(),
@@ -359,4 +360,8 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.left-17rem {
+  left: 17rem !important;
+}
+</style>
