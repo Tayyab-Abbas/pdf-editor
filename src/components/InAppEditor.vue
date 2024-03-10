@@ -70,14 +70,16 @@
           <img src="/minus.svg" alt="An icon for adding drawing"/>
         </label>
       </div>
-      <div class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
+
+      <!-- Todo: rename your pdf disable -->
+      <!-- <div class="justify-center mr-3 md:mr-4 w-full max-w-xs hidden md:flex">
         <img src="/edit.svg" class="mr-2" alt="a pen, edit pdf name"/>
         <input
             placeholder="Rename your PDF here"
             type="text"
             class="flex-grow bg-transparent"
             :value="pdfName"/>
-      </div>
+      </div> -->
       <!-- Todo: Download button is disabled -->
       <!-- <button
           @click="savePDF"
@@ -99,14 +101,16 @@
     </div>
     <div v-if="!loading" class="w-full">
       <div v-if="pages.length" class="w-full">
-      <div class="flex justify-center px-5 w-full md:hidden">
+
+        <!-- Todo: rename your pdf disable -->
+      <!-- <div class="flex justify-center px-5 w-full md:hidden">
         <img src="/edit.svg" class="mr-2" alt="a pen, edit pdf name"/>
         <input
             placeholder="Rename your PDF here"
             type="text"
             class="flex-grow bg-transparent"
             :value="pdfName"/>
-      </div>
+      </div> -->
       <div class="w-full">
         <div v-for="(page,pIndex) in pages" :key="pIndex">
           <div
