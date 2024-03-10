@@ -267,7 +267,7 @@ export default {
     console.log(this.DEBUG_LINK);
     this.loading = true;
     try {
-      const res = await fetch(this.DEBUG_LINK, { mode: 'no-cors' });
+      const res = await fetch(this.DEBUG_LINK);
       const pdfBlob = await res.blob();
       await this.addPDF(pdfBlob);
       this.selectedPageIndex = 0;
